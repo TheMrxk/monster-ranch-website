@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>班级怪兽牧场 · 让每一间教室都成为冒险的乐园</title>
+<meta name="description" content="班级怪兽牧场——面向学校的游戏化班级管理平台。教师端、家长端、课堂大屏三端一体，宠物养成、实时对抗、考勤任务、家校共育。">
+<style>
+/* ============ Base ============ */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --night:#0d0b22; --night2:#160f33; --night3:#211750;
+  --cream:#fff6ee; --ink:#1c1733; --muted:#6b6484;
+  --purple:#8b5cf6; --pink:#ff6b9d; --gold:#ffc94d;
+  --blue:#5eb8ff; --green:#54d18a;
+  --r:24px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  color:var(--ink);background:#fff;overflow-x:hidden;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+section{position:relative}
+
+/* ============ Nav ============ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(13,11,34,.55);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid rgba(255,255,255,.08);transition:background .4s,border-color .4s}
+.nav.light{background:rgba(255,246,238,.72);border-bottom:1px solid rgba(28,23,51,.08)}
+.nav-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;color:#fff;letter-spacing:.5px}
+.nav.light .nav-brand{color:var(--ink)}
+.nav-brand .logo{width:30px;height:30px;border-radius:9px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));display:grid;place-items:center;font-size:16px}
+.nav-links{display:flex;gap:28px;font-size:14px}
+.nav-links a{color:rgba(255,255,255,.78);transition:color .25s}
+.nav.light .nav-links a{color:rgba(28,23,51,.72)}
+.nav-links a:hover{color:#fff}
+.nav.light .nav-links a:hover{color:var(--purple)}
+.nav-cta{font-size:13.5px;font-weight:600;color:#fff;padding:8px 18px;border-radius:999px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));transition:transform .25s,box-shadow .25s}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(139,92,246,.4)}
+@media(max-width:760px){.nav-links{display:none}}
+
+/* ============ Hero ============ */
+.hero{min-height:100vh;background:
+  radial-gradient(1200px 700px at 75% -10%,rgba(139,92,246,.45),transparent 60%),
+  radial-gradient(900px 600px at 10% 20%,rgba(255,107,157,.28),transparent 60%),
+  radial-gradient(700px 500px at 50% 110%,rgba(94,184,255,.22),transparent 60%),
+  linear-gradient(180deg,var(--night),var(--night2) 60%,var(--night3));
+  display:flex;align-items:center;overflow:hidden;padding:120px 0 80px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;width:100%}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:2px;
+  color:#cbbfff;background:rgba(139,92,246,.18);border:1px solid rgba(139,92,246,.4);
+  padding:7px 16px;border-radius:999px;margin-bottom:26px}
+.hero h1{color:#fff;font-size:clamp(34px,5.2vw,62px);line-height:1.12;font-weight:700;letter-spacing:-.5px}
+.hero h1 .grad{background:linear-gradient(100deg,#cbbfff,#ffb4d0 55%,#ffd98a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.sub{margin-top:22px;color:rgba(255,255,255,.72);font-size:clamp(15px,1.6vw,19px);max-width:520px}
+.hero-actions{margin-top:38px;display:flex;gap:16px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:600;padding:15px 32px;border-radius:999px;transition:transform .3s,box-shadow .3s,background .3s;cursor:pointer;border:none}
+.btn-primary{color:#fff;background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 12px 36px rgba(139,92,246,.45)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 48px rgba(139,92,246,.55)}
+.btn-ghost{color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22)}
+.btn-ghost:hover{background:rgba(255,255,255,.16);transform:translateY(-3px)}
+.hero-note{margin-top:20px;font-size:13px;color:rgba(255,255,255,.45)}
+
+/* Hero visual */
+.hero-visual{position:relative;height:520px}
+.hv-pet{position:absolute;filter:drop-shadow(0 30px 50px rgba(0,0,0,.45));will-change:transform}
+.hv-pet img{width:100%;height:100%;object-fit:contain}
+.hv-main{width:300px;height:300px;left:50%;top:50%;transform:translate(-50%,-50%);
+  animation:float1 6s ease-in-out infinite}
+.hv-a{width:130px;height:130px;left:2%;top:8%;animation:float2 7s ease-in-out infinite}
+.hv-b{width:100px;height:100px;right:4%;top:18%;animation:float3 8s ease-in-out infinite}
+.hv-c{width:110px;height:110px;left:8%;bottom:6%;animation:float4 6.5s ease-in-out infinite}
+.hv-d{width:120px;height:120px;right:2%;bottom:14%;animation:float2 7.5s ease-in-out infinite reverse}
+.orbit-ring{position:absolute;left:50%;top:50%;width:380px;height:380px;transform:translate(-50%,-50%);
+  border:1px dashed rgba(255,255,255,.16);border-radius:50%;animation:spin 40s linear infinite}
+.orbit-ring.r2{width:470px;height:470px;animation-duration:60s;animation-direction:reverse;border-color:rgba(255,255,255,.09)}
+.hv-chip{position:absolute;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(14px);color:#fff;font-size:13px;font-weight:600;padding:9px 16px;border-radius:999px;
+  display:flex;align-items:center;gap:7px;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:float3 7s ease-in-out infinite}
+.hv-chip.c1{left:0;top:42%}
+.hv-chip.c2{right:-2%;top:56%;animation-delay:-2s}
+.hv-chip.c3{left:22%;bottom:-2%;animation-delay:-3.5s}
+.hv-chip .dot{width:8px;height:8px;border-radius:50%}
+@keyframes float1{0%,100%{transform:translate(-50%,-52%)}50%{transform:translate(-50%,-46%)}}
+@keyframes float2{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-22px) rotate(3deg)}}
+@keyframes float3{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes float4{0%,100%{transform:translateY(0) rotate(2deg)}50%{transform:translateY(-20px) rotate(-2deg)}}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.particles{position:absolute;inset:0;pointer-events:none}
+.particles span{position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.5);animation:rise linear infinite}
+@keyframes rise{0%{transform:translateY(20px);opacity:0}15%{opacity:1}100%{transform:translateY(-100vh);opacity:0}}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.5);font-size:12px;letter-spacing:2px;text-align:center}
+.scroll-hint::after{content:"";display:block;width:1px;height:36px;margin:8px auto 0;
+  background:linear-gradient(rgba(255,255,255,.7),transparent);animation:drip 1.8s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1);transform-origin:top}56%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ============ Stats ============ */
+.stats{background:#fff;padding:70px 0;border-bottom:1px solid #f0e9df}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+.stat-num{font-size:clamp(34px,4vw,50px);font-weight:700;letter-spacing:-1px;
+  background:linear-gradient(120deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat-label{margin-top:8px;color:var(--muted);font-size:14.5px}
+
+/* ============ Generic section heading ============ */
+.sec-head{text-align:center;max-width:720px;margin:0 auto}
+.sec-eyebrow{font-size:13px;font-weight:700;letter-spacing:3px;color:var(--purple);text-transform:uppercase}
+.sec-title{font-size:clamp(28px,3.6vw,44px);font-weight:700;letter-spacing:-.5px;margin-top:14px;line-height:1.2}
+.sec-sub{margin-top:16px;color:var(--muted);font-size:clamp(15px,1.5vw,18px)}
+
+/* ============ Three ends ============ */
+.ends{background:var(--cream);padding:110px 0}
+.ends-grid{margin-top:64px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.end-card{background:#fff;border-radius:var(--r);padding:38px 30px;text-align:center;
+  box-shadow:0 12px 40px rgba(109,74,163,.08);transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s;
+  position:relative;overflow:hidden}
+.end-card::before{content:"";position:absolute;inset:0 0 auto;height:4px;
+  background:linear-gradient(90deg,var(--pc1,var(--purple)),var(--pc2,var(--pink)))}
+.end-card:hover{transform:translateY(-10px);box-shadow:0 30px 70px rgba(109,74,163,.18)}
+.end-ico{width:74px;height:74px;margin:6px auto 22px;border-radius:22px;display:grid;place-items:center;font-size:34px;
+  background:linear-gradient(135deg,var(--pc1,var(--purple)),var(--pc2,var(--pink)));
+  box-shadow:0 14px 30px color-mix(in srgb,var(--pc1,var(--purple)) 35%,transparent)}
+.end-card h3{font-size:21px;font-weight:700}
+.end-card p{margin-top:12px;color:var(--muted);font-size:14.5px}
+.end-tags{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.end-tags span{font-size:12.5px;color:#5c5478;background:var(--cream);border-radius:999px;padding:5px 13px}
+
+/* ============ Scenes (Apple-style product storytelling) ============ */
+.scene{padding:110px 0;overflow:hidden}
+.scene.cream{background:var(--cream)}
+.scene.dark{background:
+  radial-gradient(900px 600px at 80% 0%,rgba(139,92,246,.35),transparent 60%),
+  radial-gradient(700px 500px at 10% 100%,rgba(255,107,157,.2),transparent 60%),
+  linear-gradient(180deg,var(--night),var(--night2));color:#fff}
+.scene-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-top:56px}
+.scene-grid.flip .scene-text{order:2}
+.scene-text h3{font-size:clamp(26px,3vw,38px);font-weight:700;line-height:1.2;letter-spacing:-.5px}
+.scene.text .scene-text h3,.scene.dark .scene-text h3{color:#fff}
+.scene-text .lead{margin-top:18px;color:var(--muted);font-size:16.5px}
+.scene.dark .scene-text .lead{color:rgba(255,255,255,.7)}
+.feature-list{margin-top:28px;list-style:none;display:flex;flex-direction:column;gap:16px}
+.feature-list li{display:flex;gap:14px;align-items:flex-start;font-size:15.5px}
+.scene.dark .feature-list li{color:rgba(255,255,255,.88)}
+.fl-ico{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:16px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;box-shadow:0 8px 20px rgba(139,92,246,.35)}
+.fl-ico.blue{background:linear-gradient(135deg,#4aa8ff,#7b6cff)}
+.fl-ico.gold{background:linear-gradient(135deg,#ffb443,#ff7a59)}
+.fl-ico.green{background:linear-gradient(135deg,#34c97e,#38b8c9)}
+.fl-ico.pink{background:linear-gradient(135deg,#ff6b9d,#c44dff)}
+
+/* Scene visuals */
+.scene-visual{position:relative;border-radius:var(--r);min-height:380px;display:grid;place-items:center}
+/* evolution stage */
+.evo-stage{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.evo-stage img{width:31%;filter:drop-shadow(0 20px 34px rgba(109,74,163,.25))}
+.evo-stage .arw{color:var(--purple);font-size:22px;font-weight:700}
+.evo-badge{position:absolute;top:18px;left:18px;background:#fff;border-radius:999px;font-size:12.5px;font-weight:700;
+  color:var(--purple);padding:7px 15px;box-shadow:0 8px 24px rgba(109,74,163,.18)}
+
+/* simulated bigscreen */
+.sim{width:100%;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.14);
+  background:linear-gradient(160deg,rgba(33,23,80,.95),rgba(22,15,51,.95));
+  box-shadow:0 40px 90px rgba(0,0,0,.55);padding:22px;position:relative}
+.sim-title{display:flex;align-items:center;justify-content:space-between;color:#fff;font-size:13px;letter-spacing:1px;opacity:.85}
+.sim-live{display:flex;align-items:center;gap:6px;color:#ff8fa8;font-size:12px;font-weight:700}
+.sim-live i{width:8px;height:8px;border-radius:50%;background:#ff5b7c;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.25}}
+.sim-teams{margin-top:18px;display:flex;flex-direction:column;gap:12px}
+.sim-team{display:flex;align-items:center;gap:12px;color:#fff}
+.sim-team img{width:44px;height:44px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,.4))}
+.sim-team .tname{font-size:14px;font-weight:600;width:72px}
+.sim-bar{flex:1;height:14px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden}
+.sim-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--pink));width:30%;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.sim-bar.b2 i{background:linear-gradient(90deg,#4aa8ff,#54d18a)}
+.sim-score{font-size:20px;font-weight:800;width:42px;text-align:right;font-variant-numeric:tabular-nums}
+.sim-foot{margin-top:16px;text-align:center;color:rgba(255,255,255,.55);font-size:12px}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:20px}
+.confetti i{position:absolute;top:-12px;width:7px;height:12px;border-radius:2px;opacity:.9;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(420px) rotate(540deg)}}
+
+/* management grid visual */
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%}
+.mcard{background:#fff;border-radius:18px;padding:20px 14px;text-align:center;
+  box-shadow:0 12px 30px rgba(109,74,163,.1);transition:transform .4s}
+.mcard:hover{transform:translateY(-6px) scale(1.03)}
+.mcard .mi{font-size:30px}
+.mcard b{display:block;margin-top:10px;font-size:14px}
+.mcard small{color:var(--muted);font-size:12px}
+
+/* parent phone */
+.phone{width:260px;margin:0 auto;border-radius:38px;background:#1c1733;padding:12px;
+  box-shadow:0 40px 80px rgba(109,74,163,.35)}
+.phone-screen{background:var(--cream);border-radius:28px;padding:18px 16px;min-height:380px}
+.phone-top{font-size:13px;font-weight:700}
+.phone-row{margin-top:14px;background:#fff;border-radius:16px;padding:13px 14px;box-shadow:0 8px 20px rgba(109,74,163,.08)}
+.phone-row .pr-t{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+.phone-row .pr-d{font-size:11.5px;color:var(--muted);margin-top:5px}
+.phone-mini{display:flex;gap:10px;align-items:center;margin-top:10px}
+.phone-mini img{width:42px;height:42px;object-fit:contain}
+.phone-mini b{font-size:12.5px}.phone-mini small{font-size:11px;color:var(--muted)}
+
+/* ============ School guarantees ============ */
+.guarantee{background:#fff;padding:110px 0}
+.g-grid{margin-top:64px;display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.g-card{border:1px solid #f0e7da;border-radius:var(--r);padding:32px 26px;transition:transform .4s,box-shadow .4s,border-color .4s}
+.g-card:hover{transform:translateY(-8px);box-shadow:0 26px 60px rgba(109,74,163,.14);border-color:#e3d3f5}
+.g-ico{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:26px;
+  background:linear-gradient(135deg,#f1e9ff,#ffe4ee)}
+.g-card h4{margin-top:20px;font-size:17px;font-weight:700}
+.g-card p{margin-top:9px;font-size:14px;color:var(--muted)}
+
+/* ============ Pricing ============ */
+.pricing{background:var(--cream);padding:110px 0}
+.price-grid{margin-top:64px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:stretch}
+.price-card{background:#fff;border-radius:var(--r);padding:42px 34px;display:flex;flex-direction:column;
+  box-shadow:0 12px 40px rgba(109,74,163,.08);transition:transform .4s,box-shadow .4s;position:relative}
+.price-card:hover{transform:translateY(-8px)}
+.price-card.hot{background:
+  radial-gradient(500px 300px at 80% -10%,rgba(255,107,157,.25),transparent 60%),
+  linear-gradient(160deg,#2a1a63,#1c1247);color:#fff;
+  box-shadow:0 30px 70px rgba(139,92,246,.4);transform:scale(1.04)}
+.price-card.hot:hover{transform:scale(1.04) translateY(-8px)}
+.hot-tag{position:absolute;top:-15px;left:50%;transform:translateX(-50%);font-size:12.5px;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,var(--pink),var(--purple));padding:7px 20px;border-radius:999px;
+  box-shadow:0 10px 24px rgba(255,107,157,.5)}
+.plan-name{font-size:16px;font-weight:700;letter-spacing:1px;opacity:.75}
+.plan-price{margin-top:18px;font-size:54px;font-weight:800;letter-spacing:-2px;line-height:1}
+.plan-price small{font-size:17px;font-weight:600;letter-spacing:0}
+.plan-per{margin-top:8px;font-size:13.5px;color:var(--muted)}
+.hot .plan-per{color:rgba(255,255,255,.6)}
+.plan-divider{height:1px;background:#f0e9df;margin:26px 0}
+.hot .plan-divider{background:rgba(255,255,255,.14)}
+.plan-list{list-style:none;display:flex;flex-direction:column;gap:13px;font-size:14.5px;flex:1}
+.plan-list li{display:flex;gap:10px;align-items:flex-start}
+.plan-list .ck{color:var(--purple);font-weight:800}
+.hot .plan-list .ck{color:#ff9ec0}
+.hot .plan-list li{color:rgba(255,255,255,.88)}
+.plan-btn{margin-top:30px;text-align:center;padding:14px;border-radius:999px;font-weight:700;font-size:15px;
+  border:1.5px solid var(--purple);color:var(--purple);transition:all .3s}
+.plan-btn:hover{background:var(--purple);color:#fff}
+.hot .plan-btn{background:linear-gradient(135deg,var(--pink),var(--purple));border-color:transparent;color:#fff}
+.hot .plan-btn:hover{box-shadow:0 12px 30px rgba(255,107,157,.45)}
+.price-note{text-align:center;margin-top:34px;color:var(--muted);font-size:14px}
+.price-note b{color:var(--purple)}
+
+/* ============ FAQ ============ */
+.faq{background:#fff;padding:110px 0}
+.faq-list{max-width:780px;margin:56px auto 0;display:flex;flex-direction:column;gap:14px}
+.faq-item{border:1px solid #efe7da;border-radius:18px;overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.faq-item.open{border-color:#e3d3f5;box-shadow:0 16px 40px rgba(109,74,163,.1)}
+.faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  padding:22px 26px;font-size:16.5px;font-weight:700;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq-q .pm{flex:none;width:28px;height:28px;border-radius:50%;background:#f4edff;color:var(--purple);
+  display:grid;place-items:center;font-size:18px;transition:transform .35s,background .35s,color .35s}
+.faq-item.open .pm{transform:rotate(45deg);background:var(--purple);color:#fff}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .45s ease}
+.faq-a p{padding:0 26px 24px;color:var(--muted);font-size:15px}
+
+/* ============ Final CTA ============ */
+.final{padding:120px 0;text-align:center;background:
+  radial-gradient(800px 500px at 50% -20%,rgba(139,92,246,.4),transparent 60%),
+  linear-gradient(180deg,var(--night2),var(--night));color:#fff;overflow:hidden}
+.final h2{font-size:clamp(30px,4.4vw,52px);font-weight:700;letter-spacing:-.5px}
+.final p{margin-top:18px;color:rgba(255,255,255,.68);font-size:17px}
+.final .hero-actions{justify-content:center;margin-top:40px}
+.final-pets{margin-top:60px;display:flex;justify-content:center;gap:26px}
+.final-pets img{width:84px;height:84px;object-fit:contain;filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
+.final-pets img:nth-child(odd){animation:float3 6s infinite}
+.final-pets img:nth-child(even){animation:float2 7s infinite}
+
+/* ============ Footer ============ */
+footer{background:#0a0818;color:rgba(255,255,255,.55);padding:56px 0 40px;font-size:13.5px}
+.foot-grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.foot-brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:15px;margin-bottom:14px}
+.foot-brand .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--purple),var(--pink));display:grid;place-items:center;font-size:14px}
+.foot-col b{color:rgba(255,255,255,.85);font-size:13px;letter-spacing:1px}
+.foot-col a{display:block;margin-top:10px;transition:color .25s}
+.foot-col a:hover{color:#fff}
+.foot-bottom{margin-top:44px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12.5px;color:rgba(255,255,255,.38)}
+
+/* ============ Reveal animations ============ */
+.reveal{opacity:0;transform:translateY(44px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.12s}.reveal.d2{transition-delay:.24s}.reveal.d3{transition-delay:.36s}
+
+/* ============ Responsive ============ */
+@media(max-width:960px){
+  .hero .wrap{grid-template-columns:1fr;text-align:center}
+  .hero p.sub{margin-left:auto;margin-right:auto}
+  .hero-actions{justify-content:center}
+  .hero-visual{height:400px;margin-top:10px}
+  .hv-main{width:230px;height:230px}
+  .orbit-ring{width:280px;height:280px}.orbit-ring.r2{width:330px;height:330px}
+  .scene-grid,.scene-grid.flip{grid-template-columns:1fr;gap:40px}
+  .scene-grid.flip .scene-text{order:0}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:40px 20px}
+  .ends-grid,.price-grid{grid-template-columns:1fr;max-width:460px;margin-left:auto;margin-right:auto}
+  .price-card.hot{transform:none}.price-card.hot:hover{transform:translateY(-8px)}
+  .g-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:520px){
+  .g-grid{grid-template-columns:1fr}
+  .mgrid{grid-template-columns:repeat(2,1fr)}
+  .hero-visual{height:340px}
+  .hv-a,.hv-b,.hv-c,.hv-d{width:80px;height:80px}
+  .hv-chip{font-size:11.5px;padding:7px 12px}
+  .hv-chip.c2{right:0}
+  .evo-stage .arw{display:none}
+  .evo-stage img{width:46%}
+  .final-pets{gap:10px}.final-pets img{width:60px;height:60px}
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#top"><span class="logo">🐾</span>班级怪兽牧场</a>
+    <div class="nav-links">
+      <a href="#product">产品</a>
+      <a href="#screen">实时大屏</a>
+      <a href="#school">学校方案</a>
+      <a href="#pricing">定价</a>
+      <a href="#faq">常见问题</a>
+    </div>
+    <a class="nav-cta" href="#pricing">申请试用</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero" id="top">
+  <div class="particles" id="particles"></div>
+  <div class="wrap">
+    <div class="hero-text">
+      <span class="hero-eyebrow">✦ 面向学校的游戏化班级管理平台</span>
+      <h1>让每一间教室，<br>都成为<span class="grad">冒险的乐园</span>。</h1>
+      <p class="sub">教师端、家长端、课堂大屏三端一体。把日常的纪律、考勤、作业与对抗，变成学生自愿追逐的成长与陪伴。</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#pricing">申请学校免费试用 →</a>
+        <a class="btn btn-ghost" href="#product">观看产品介绍</a>
+      </div>
+      <p class="hero-note">无需下载安装 · 手机电脑自适应 · 支持学校本地化部署</p>
+    </div>
+    <div class="hero-visual">
+      <div class="orbit-ring"></div>
+      <div class="orbit-ring r2"></div>
+      <div class="hv-pet hv-main"><img src="assets/pets/dragon_stage3.png" alt="终极进化宠物"></div>
+      <div class="hv-pet hv-a"><img src="assets/pets/fire_stage2.png" alt=""></div>
+      <div class="hv-pet hv-b"><img src="assets/pets/water_stage1.png" alt=""></div>
+      <div class="hv-pet hv-c"><img src="assets/pets/grass_stage2.png" alt=""></div>
+      <div class="hv-pet hv-d"><img src="assets/pets/ghost_stage1.png" alt=""></div>
+      <div class="hv-chip c1"><span class="dot" style="background:#54d18a"></span>今日全勤 +5</div>
+      <div class="hv-chip c2"><span class="dot" style="background:#ffc94d"></span>宠物升级了！</div>
+      <div class="hv-chip c3"><span class="dot" style="background:#ff6b9d"></span>小组对抗 实时领先</div>
+    </div>
+  </div>
+  <div class="scroll-hint">SCROLL</div>
+</header>
+
+<!-- Stats -->
+<section class="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="reveal"><div class="stat-num"><span class="counter" data-target="120">0</span>+</div><div class="stat-label">接入班级</div></div>
+      <div class="reveal d1"><div class="stat-num"><span class="counter" data-target="5000">0</span>+</div><div class="stat-label">陪伴学生</div></div>
+      <div class="reveal d2"><div class="stat-num"><span class="counter" data-target="38">0</span>万+</div><div class="stat-label">课堂加分记录</div></div>
+      <div class="reveal d3"><div class="stat-num"><span class="counter" data-target="98">0</span>%</div><div class="stat-label">教师续约意愿</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Three ends -->
+<section class="ends" id="product">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">One Platform</div>
+      <h2 class="sec-title">三端一体，一个牧场连接所有人</h2>
+      <p class="sec-sub">老师教学管理、家长随时参与、课堂大屏实时呈现，数据在三端之间秒级同步。</p>
+    </div>
+    <div class="ends-grid">
+      <div class="end-card reveal" style="--pc1:#8b5cf6;--pc2:#5eb8ff">
+        <div class="end-ico">🧑‍🏫</div>
+        <h3>教师端</h3>
+        <p>加减分、考勤、任务、值日、请假审批、班费记录——日常班级事务，一个入口全部完成。</p>
+        <div class="end-tags"><span>加减分</span><span>考勤管理</span><span>小组对抗</span><span>代兑换皮肤</span></div>
+      </div>
+      <div class="end-card reveal d1" style="--pc1:#ff6b9d;--pc2:#c44dff">
+        <div class="end-ico">👨‍👩‍👧</div>
+        <h3>家长端</h3>
+        <p>扫码即连。查看孩子积分与宠物、提交请假、送出鼓励礼物、接收值日提醒与学期成长报告。</p>
+        <div class="end-tags"><span>请假申请</span><span>成长报告</span><span>鼓励礼物</span><span>值日提醒</span></div>
+      </div>
+      <div class="end-card reveal d2" style="--pc1:#54d18a;--pc2:#ffc94d">
+        <div class="end-ico">📺</div>
+        <h3>课堂大屏</h3>
+        <p>牧场全景、实时对抗、考勤网格、荣誉殿堂——12 块大屏主题，让全班的每一次努力都被看见。</p>
+        <div class="end-tags"><span>实时数据</span><span>对抗 PK</span><span>冠军庆祝</span><span>荣誉轮播</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Scene 1: Pet growth -->
+<section class="scene cream">
+  <div class="wrap">
+    <div class="scene-grid">
+      <div class="scene-text reveal">
+        <div class="sec-eyebrow">成长闭环</div>
+        <h3>每一次好好表现，<br>都在养育一只真正属于自己的伙伴。</h3>
+        <p class="lead">课堂加分自动转化为宠物经验，5 级、10 级两次进化，5 系精灵、15 种成长形态，还有稀有皮肤与终极海报。</p>
+        <ul class="feature-list">
+          <li><span class="fl-ico">🍖</span><div><b>喂养与陪伴</b><br>老师可代为喂养、玩耍，关注宠物饱食与心情。</div></li>
+          <li><span class="fl-ico pink">✨</span><div><b>进化仪式</b><br>10 级终极进化触发全屏海报时刻，全班共同见证。</div></li>
+          <li><span class="fl-ico gold">👕</span><div><b>皮肤商店</b><br>积分与碎片双货币兑换，老师可代学生操作。</div></li>
+        </ul>
+      </div>
+      <div class="scene-visual reveal d1">
+        <div class="evo-badge">🐉 炽焰龙 · 成长链</div>
+        <div class="evo-stage">
+          <img src="assets/pets/dragon_stage1.png" alt="幼年期">
+          <span class="arw">→</span>
+          <img src="assets/pets/dragon_stage2.png" alt="成长期">
+          <span class="arw">→</span>
+          <img src="assets/pets/dragon_stage3.png" alt="终极形态">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Scene 2: Big screen realtime (dark, cinematic) -->
+<section class="scene dark" id="screen">
+  <div class="wrap">
+    <div class="scene-grid flip">
+      <div class="scene-text reveal">
+        <div class="sec-eyebrow" style="color:#ff9ec0">课堂大屏 · 实时对抗</div>
+        <h3>一块大屏，<br>点燃整个班级的胜负欲。</h3>
+        <p class="lead">小组对抗全程实时刷新：领先光柱、比分跳动、战斗结束瞬间触发积分滚动与全屏冠军庆祝——彩带、金冠、流光标题，一个都不少。</p>
+        <ul class="feature-list">
+          <li><span class="fl-ico blue">⚡</span><div><b>秒级实时同步</b><br>教师手机端加减分，大屏 3 秒内即时响应。</div></li>
+          <li><span class="fl-ico pink">🏆</span><div><b>冠军庆祝动画</b><br>全屏彩带 + 金冠 + 积分滚动，荣誉感直接拉满。</div></li>
+          <li><span class="fl-ico gold">🏛️</span><div><b>荣誉殿堂</b><br>每届冠军自动留名，大屏海报轮播传承。</div></li>
+        </ul>
+      </div>
+      <div class="scene-visual reveal d1">
+        <div class="sim" id="sim">
+          <div class="sim-title"><span>小组对抗 · 第三场</span><span class="sim-live"><i></i>LIVE</span></div>
+          <div class="sim-teams">
+            <div class="sim-team">
+              <img src="assets/pets/fire_stage3.png" alt="">
+              <span class="tname">烈焰组</span>
+              <span class="sim-bar"><i id="bar1"></i></span>
+              <span class="sim-score" id="sc1">0</span>
+            </div>
+            <div class="sim-team">
+              <img src="assets/pets/water_stage3.png" alt="">
+              <span class="tname">潮汐组</span>
+              <span class="sim-bar b2"><i id="bar2"></i></span>
+              <span class="sim-score" id="sc2">0</span>
+            </div>
+            <div class="sim-team">
+              <img src="assets/pets/grass_stage3.png" alt="">
+              <span class="tname">森语组</span>
+              <span class="sim-bar"><i id="bar3" style="background:linear-gradient(90deg,#54d18a,#ffc94d)"></i></span>
+              <span class="sim-score" id="sc3">0</span>
+            </div>
+          </div>
+          <div class="sim-foot">对抗结束时自动触发全屏冠军庆祝动画</div>
+          <div class="confetti" id="confetti"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Scene 3: Teaching management -->
+<section class="scene cream">
+  <div class="wrap">
+    <div class="scene-grid flip">
+      <div class="scene-text reveal">
+        <div class="sec-eyebrow">教学管理全家桶</div>
+        <h3>老师每天要用的，<br>我们都替你想到了。</h3>
+        <p class="lead">不止是游戏化积分。从考勤到值日、从作业任务到班费台账，所有数据自动汇总进学期成长报告。</p>
+        <ul class="feature-list">
+          <li><span class="fl-ico green">🗓️</span><div><b>课堂考勤</b><br>出勤 / 迟到 / 缺勤 / 请假，大屏彩色网格一目了然。</div></li>
+          <li><span class="fl-ico">📝</span><div><b>任务与目标</b><br>发布作业、全班目标计数器，达标自动奖励全班。</div></li>
+          <li><span class="fl-ico gold">🧹</span><div><b>自动值日排班</b><br>按学号自动轮转，家长端同步收到值日提醒。</div></li>
+        </ul>
+      </div>
+      <div class="scene-visual reveal d1">
+        <div class="mgrid">
+          <div class="mcard"><div class="mi">🗓️</div><b>课堂考勤</b><small>出勤率环</small></div>
+          <div class="mcard"><div class="mi">📝</div><b>任务榜</b><small>完成进度</small></div>
+          <div class="mcard"><div class="mi">🎯</div><b>全班目标</b><small>达标发奖</small></div>
+          <div class="mcard"><div class="mi">🧹</div><b>值日排班</b><small>自动轮转</small></div>
+          <div class="mcard"><div class="mi">💰</div><b>班费台账</b><small>一键催缴</small></div>
+          <div class="mcard"><div class="mi">📄</div><b>学期报告</b><small>导出 PDF</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Scene 4: Home-school -->
+<section class="scene">
+  <div class="wrap">
+    <div class="scene-grid">
+      <div class="scene-text reveal">
+        <div class="sec-eyebrow">家校共育</div>
+        <h3>家长不用装 App，<br>扫码就能参与孩子的每一天。</h3>
+        <p class="lead">一张二维码连接家长端：请假审批、鼓励礼物、值日提醒、孩子的宠物动态与学期成长报告，家校之间从此没有信息差。</p>
+        <ul class="feature-list">
+          <li><span class="fl-ico pink">📩</span><div><b>请假线上审批</b><br>家长提交、老师审批，通过后自动记入考勤。</div></li>
+          <li><span class="fl-ico gold">🎁</span><div><b>送一份鼓励</b><br>家长可送礼物，老师复核后到达孩子手中。</div></li>
+          <li><span class="fl-ico blue">📄</span><div><b>学期成长报告</b><br>积分、考勤、荣誉自动汇总，一键导出 PDF。</div></li>
+        </ul>
+      </div>
+      <div class="scene-visual reveal d1">
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-top">家长端 · 首页</div>
+            <div class="phone-row">
+              <div class="pr-t">📅 今日值日提醒</div>
+              <div class="pr-d">孩子今天负责擦黑板，别忘了提前准备～</div>
+            </div>
+            <div class="phone-row">
+              <div class="phone-mini">
+                <img src="assets/pets/dragon_stage2.png" alt="">
+                <div><b>小火龙 · Lv.7</b><br><small>再得 120 经验就进化啦！</small></div>
+              </div>
+            </div>
+            <div class="phone-row">
+              <div class="pr-t">📝 请假申请 · 已通过</div>
+              <div class="pr-d">9月26日 事假半天，已自动记入考勤。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- School guarantees -->
+<section class="guarantee" id="school">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">For Schools</div>
+      <h2 class="sec-title">为学校级客户准备的服务保障</h2>
+      <p class="sec-sub">从试点班级到全校铺开，我们提供企业采购所需的全部支持。</p>
+    </div>
+    <div class="g-grid">
+      <div class="g-card reveal"><div class="g-ico">🔐</div><h4>数据安全与私有化</h4><p>支持学校本地化部署，学生数据留存校内，权限分级、操作留痕。</p></div>
+      <div class="g-card reveal d1"><div class="g-ico">🏢</div><h4>独立超管后台</h4><p>学校拥有独立管理后台，统一管理班级、教师与全校数据看板。</p></div>
+      <div class="g-card reveal d2"><div class="g-ico">🧾</div><h4>合同发票齐全</h4><p>支持按学校年付签约，提供正规合同与报销发票。</p></div>
+      <div class="g-card reveal d3"><div class="g-ico">🚀</div><h4>专属上线支持</h4><p>教师培训、试点陪跑、学期数据报告，全程专人对接。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">Pricing</div>
+      <h2 class="sec-title">简单透明的定价</h2>
+      <p class="sec-sub">一个班级一份订阅，全部功能开放，随时可升级或取消。</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card reveal">
+        <div class="plan-name">月卡</div>
+        <div class="plan-price"><small>¥</small>19</div>
+        <div class="plan-per">每月 · 适合先试用一个月</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-list">
+          <li><span class="ck">✓</span>教师端 + 家长端 + 课堂大屏</li>
+          <li><span class="ck">✓</span>宠物养成与全部教学功能</li>
+          <li><span class="ck">✓</span>手机电脑自适应访问</li>
+          <li><span class="ck">✓</span>数据自动备份</li>
+        </ul>
+        <a class="plan-btn" href="mailto:hekai@10v.cc?subject=班级怪兽牧场月卡开通">开通月卡</a>
+      </div>
+      <div class="price-card hot reveal d1">
+        <div class="hot-tag">★ 最受欢迎</div>
+        <div class="plan-name">季卡</div>
+        <div class="plan-price"><small>¥</small>29</div>
+        <div class="plan-per">每季度 · 折合每月不到 ¥10</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-list">
+          <li><span class="ck">✓</span>月卡全部功能</li>
+          <li><span class="ck">✓</span>优先接入新功能</li>
+          <li><span class="ck">✓</span>学期成长报告导出</li>
+          <li><span class="ck">✓</span>比月卡节省约 49%</li>
+        </ul>
+        <a class="plan-btn" href="mailto:hekai@10v.cc?subject=班级牧场季卡开通">开通季卡</a>
+      </div>
+      <div class="price-card reveal d2">
+        <div class="plan-name">年卡</div>
+        <div class="plan-price"><small>¥</small>289</div>
+        <div class="plan-per">每年 · 学校采购推荐</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-list">
+          <li><span class="ck">✓</span>季卡全部功能与权益</li>
+          <li><span class="ck">✓</span>支持学校合同与发票</li>
+          <li><span class="ck">✓</span>可选本地化部署方案</li>
+          <li><span class="ck">✓</span>专属上线培训支持</li>
+      </ul>
+        <a class="plan-btn" href="mailto:hekai@10v.cc?subject=班级牧场年卡/学校采购">咨询学校采购</a>
+      </div>
+    </div>
+    <p class="price-note reveal">学校多班级批量采购另有优惠，欢迎邮件咨询：<b>hekai@10v.cc</b></p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">FAQ</div>
+      <h2 class="sec-title">学校和老师常问的问题</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-q">学校采购可以签合同、开发票吗？<span class="pm">+</span></button>
+        <div class="faq-a"><p>可以。年卡及多班级采购支持正式合同与报销发票，支持按学校年付，具体流程邮件联系 hekai@10v.cc 即可。</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">一定要下载安装 App 吗？<span class="pm">+</span></button>
+        <div class="faq-a"><p>不需要。教师和家长用手机或电脑浏览器打开即可使用，界面自动适配；家长端扫描老师提供的二维码即可连接，也支持添加到手机桌面像 App 一样使用。</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">支持部署在学校自己的服务器上吗？<span class="pm">+</span></button>
+        <div class="faq-a"><p>支持。年卡学校客户可选择本地化部署，学生数据全部留存校内，我们提供部署文档与上线培训。</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">学生的数据安全怎么保障？<span class="pm">+</span></button>
+        <div class="faq-a"><p>平台采用权限分级设计：教师只能管理本班学生，家长只能查看自己的孩子，学校超管统一管控；数据定期自动备份，本地化部署方案下数据不出校园。</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">可以先免费试用再决定吗？<span class="pm">+</span></button>
+        <div class="faq-a"><p>当然。学校可申请试点班级免费试用，开通后全部功能开放，满意后再订阅，试用期间的数据在正式开通后完整保留。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="final">
+  <div class="wrap">
+    <h2 class="reveal">新学期，<br>就从一座怪兽牧场开始。</h2>
+    <p class="reveal d1">申请试点班级免费试用，让学生们今天就为自己的伙伴而努力。</p>
+    <div class="hero-actions reveal d2">
+      <a class="btn btn-primary" href="mailto:hekai@10v.cc?subject=申请班级怪兽牧场试用">📧 申请免费试用</a>
+      <a class="btn btn-ghost" href="mailto:952339610@qq.com">联系商务咨询</a>
+    </div>
+    <div class="final-pets reveal d3">
+      <img src="assets/pets/dragon_stage1.png" alt="">
+      <img src="assets/pets/fire_stage1.png" alt="">
+      <img src="assets/pets/water_stage2.png" alt="">
+      <img src="assets/pets/grass_stage1.png" alt="">
+      <img src="assets/pets/ghost_stage2.png" alt="">
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <div class="foot-brand"><span class="logo">🐾</span>班级怪兽牧场</div>
+        <div>拾蔚网络科技有限公司<br>让技术为教育做点好玩的事</div>
+      </div>
+      <div class="foot-col">
+        <b>产品</b>
+        <a href="#product">三端一体</a>
+        <a href="#screen">实时大屏</a>
+        <a href="#pricing">定价方案</a>
+      </div>
+      <div class="foot-col">
+        <b>学校合作</b>
+        <a href="#school">学校方案</a>
+        <a href="#faq">常见问题</a>
+        <a href="mailto:hekai@10v.cc">申请试用</a>
+      </div>
+      <div class="foot-col">
+        <b>联系我们</b>
+        <a href="mailto:hekai@10v.cc">hekai@10v.cc</a>
+        <a href="mailto:952339610@qq.com">952339610@qq.com</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 拾蔚网络科技有限公司 · 班级怪兽牧场</span>
+      <span>备案信息待补</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---- Particles ---- */
+  var pc=document.getElementById('particles');
+  for(var i=0;i<26;i++){
+    var s=document.createElement('span');
+    s.style.left=Math.random()*100+'%';
+    s.style.bottom='0';
+    var dur=8+Math.random()*10;
+    s.style.animationDuration=dur+'s';
+    s.style.animationDelay=(-Math.random()*dur)+'s';
+    s.style.opacity=.2+Math.random()*.5;
+    var sc=.6+Math.random()*1.4;
+    s.style.transform='scale('+sc+')';
+    pc.appendChild(s);
+  }
+
+  /* ---- Confetti ---- */
+  var cf=document.getElementById('confetti');
+  var colors=['#ff6b9d','#8b5cf6','#ffc94d','#5eb8ff','#54d18a','#fff'];
+  for(var k=0;k<34;k++){
+    var c=document.createElement('i');
+    c.style.left=Math.random()*100+'%';
+    c.style.background=colors[k%colors.length];
+    c.style.animationDuration=(2.6+Math.random()*2.4)+'s';
+    c.style.animationDelay=(-Math.random()*4)+'s';
+    cf.appendChild(c);
+  }
+
+  /* ---- Nav theme on scroll ---- */
+  var nav=document.getElementById('nav');
+  function navTheme(){
+    var y=window.scrollY;
+    nav.classList.toggle('light', y>window.innerHeight*0.75);
+  }
+  window.addEventListener('scroll',navTheme,{passive:true}); navTheme();
+
+  /* ---- Reveal on scroll ---- */
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+
+  /* ---- Counters ---- */
+  var cio=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      cio.unobserve(e.target);
+      var el=e.target,target=+el.dataset.target,t0=null,dur=1600;
+      function step(t){
+        if(!t0)t0=t;
+        var p=Math.min((t-t0)/dur,1);
+        var ease=1-Math.pow(1-p,3);
+        el.textContent=Math.round(target*ease);
+        if(p<1)requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  },{threshold:.6});
+  document.querySelectorAll('.counter').forEach(function(el){cio.observe(el)});
+
+  /* ---- Simulated battle ---- */
+  var scores=[0,0,0],els=[document.getElementById('sc1'),document.getElementById('sc2'),document.getElementById('sc3')],
+      bars=[document.getElementById('bar1'),document.getElementById('bar2'),document.getElementById('bar3')];
+  function tick(){
+    var idx=Math.floor(Math.random()*3);
+    scores[idx]+=[1,3,5][Math.floor(Math.random()*3)];
+    var max=Math.max.apply(null,scores),max=max||1;
+    for(var i=0;i<3;i++){
+      els[i].textContent=scores[i];
+      bars[i].style.width=(scores[i]/max*88+8)+'%';
+    }
+  }
+  var simActive=false;
+  var sio=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting && !simActive){simActive=true;timer=setInterval(tick,1400);}
+    });
+  },{threshold:.4});
+  sio.observe(document.getElementById('sim'));
+  tick();tick();tick();
+
+  /* ---- FAQ ---- */
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var q=item.querySelector('.faq-q'),a=item.querySelector('.faq-a');
+    q.addEventListener('click',function(){
+      var open=item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(o){
+        o.classList.remove('open');o.querySelector('.faq-a').style.maxHeight=null;
+      });
+      if(!open){item.classList.add('open');a.style.maxHeight=a.scrollHeight+'px';}
+    });
+  });
+
+  /* ---- Card tilt (pointer devices only) ---- */
+  if(window.matchMedia('(pointer:fine)').matches){
+    document.querySelectorAll('.end-card,.g-card,.price-card').forEach(function(card){
+      card.addEventListener('mousemove',function(ev){
+        var r=card.getBoundingClientRect();
+        var x=(ev.clientX-r.left)/r.width-.5, y=(ev.clientY-r.top)/r.height-.5;
+        card.style.transform='translateY(-8px) rotateX('+(-y*6)+'deg) rotateY('+(x*6)+'deg)';
+      });
+      card.addEventListener('mouseleave',function(){card.style.transform='';});
+    });
+  }
+})();
+</script>
+</body>
+</html>
