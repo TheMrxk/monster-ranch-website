@@ -215,6 +215,53 @@ section{position:relative}
 .g-card h4{margin-top:20px;font-size:17px;font-weight:700}
 .g-card p{margin-top:9px;font-size:14px;color:var(--muted)}
 
+/* 国际级设计品质 全宽卡 */
+.g-quality{
+  margin-top:22px; border-radius:var(--r);
+  background:linear-gradient(120deg,#f4efff,#ffe9f2);
+  padding:32px 36px; display:flex; align-items:center; gap:30px;
+  border:1px solid #ecdffb;
+}
+.gq-badge{
+  flex-shrink:0; font-size:12.5px; font-weight:800; letter-spacing:1px;
+  color:#fff; background:linear-gradient(135deg,var(--purple),var(--pink));
+  padding:10px 18px; border-radius:999px; white-space:nowrap;
+  box-shadow:0 10px 24px rgba(139,92,246,.3);
+}
+.gq-body h4{font-size:19px;font-weight:700}
+.gq-body p{margin-top:8px;font-size:14px;color:var(--muted);line-height:1.65}
+@media(max-width:680px){
+  .g-quality{flex-direction:column;align-items:flex-start;gap:16px;padding:26px 24px}
+}
+
+/* ============ Beta Early Access ============ */
+.beta{background:var(--cream);padding:110px 0}
+.beta-card{
+  background:linear-gradient(160deg,#2a1a63,#1c1247);
+  border-radius:32px; padding:54px 56px; color:#fff;
+  box-shadow:0 36px 90px rgba(40,20,90,.35);
+}
+.beta-tag{
+  display:inline-block; font-size:12.5px; font-weight:800; letter-spacing:1px;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  padding:8px 18px; border-radius:999px; margin-bottom:22px;
+}
+.beta-left h2{font-size:clamp(26px,3vw,38px);font-weight:700;line-height:1.2;letter-spacing:-.5px}
+.beta-left p{margin-top:14px;color:rgba(255,255,255,.72);font-size:16px;max-width:640px}
+.beta-perks{margin-top:36px;display:flex;flex-direction:column;gap:20px}
+.bp-item{display:flex;gap:16px;align-items:flex-start}
+.bp-ico{
+  flex-shrink:0;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:23px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);
+}
+.bp-item div{font-size:15px;color:rgba(255,255,255,.85);line-height:1.55}
+.bp-item b{color:#fff}
+.beta-action{margin-top:40px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.beta-mail{font-size:13.5px;color:rgba(255,255,255,.55)}
+@media(max-width:600px){
+  .beta-card{padding:38px 28px}
+}
+
 /* ============ Pricing ============ */
 .pricing{background:var(--cream);padding:110px 0}
 .price-grid{margin-top:64px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:stretch}
@@ -390,7 +437,7 @@ footer{background:#0a0818;color:rgba(255,255,255,.55);padding:56px 0 40px;font-s
         <div class="end-ico">🧑‍🏫</div>
         <h3>教师端</h3>
         <p>加减分、考勤、任务、值日、请假审批、班费记录——日常班级事务，一个入口全部完成。</p>
-        <div class="end-tags"><span>加减分</span><span>考勤管理</span><span>小组对抗</span><span>代兑换皮肤</span></div>
+        <div class="end-tags"><span>加减分</span><span>考勤管理</span><span>小组对抗</span><span>代兑换皮肤</span><span>邮箱/账号双通道</span></div>
       </div>
       <div class="end-card reveal d1" style="--pc1:#ff6b9d;--pc2:#c44dff">
         <div class="end-ico">👨‍👩‍👧</div>
@@ -566,6 +613,46 @@ footer{background:#0a0818;color:rgba(255,255,255,.55);padding:56px 0 40px;font-s
       <div class="g-card reveal d1"><div class="g-ico">🏢</div><h4>独立超管后台</h4><p>学校拥有独立管理后台，统一管理班级、教师与全校数据看板。</p></div>
       <div class="g-card reveal d2"><div class="g-ico">🧾</div><h4>合同发票齐全</h4><p>支持按学校年付签约，提供正规合同与报销发票。</p></div>
       <div class="g-card reveal d3"><div class="g-ico">🚀</div><h4>专属上线支持</h4><p>教师培训、试点陪跑、学期数据报告，全程专人对接。</p></div>
+    </div>
+
+    <!-- 国际级设计品质：全宽特色卡 -->
+    <div class="g-quality reveal">
+      <div class="gq-badge">✦ Awwwards · Webby · FWA</div>
+      <div class="gq-body">
+        <h4>国际获奖标准打磨的界面品质</h4>
+        <p>产品以 Awwwards、Webby Awards、FWA 获奖网站标准逐项打磨：排版层级、留白节奏、色彩系统、动效微交互与无障碍设计，手机电脑皆流畅精致。给学生用的产品，颜值本身就是吸引力，也让学校拿得出手。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Beta Early Access -->
+<section class="beta" id="beta">
+  <div class="wrap">
+    <div class="beta-card reveal">
+      <div class="beta-left">
+        <div class="beta-tag">✦ BETA 早期合作计划 · 限时</div>
+        <h2>和我们一起，把产品打磨成你想要的样子</h2>
+        <p>产品正在 Beta 阶段，我们寻找一批愿意先行试用、坦诚提建议的老师。你的每一条反馈都会被直接看到、认真处理。</p>
+      </div>
+      <div class="beta-perks">
+        <div class="bp-item">
+          <div class="bp-ico">🏆</div>
+          <div><b>Bug 猎人 · 送永久会员</b><br>反馈的有效 Bug 被采纳满 <b>10 条</b>，即赠送<b>永久会员</b>，无限制使用。</div>
+        </div>
+        <div class="bp-item">
+          <div class="bp-ico">💬</div>
+          <div><b>反馈全程透明</b><br>提交后可实时查看「待处理 / 已采纳 / 未采纳 / 重复」及官方回复与采纳进度。</div>
+        </div>
+        <div class="bp-item">
+          <div class="bp-ico">🚀</div>
+          <div><b>深度参与产品方向</b><br>早期合作老师的建议优先进入开发排期，你将真正影响这款产品。</div>
+        </div>
+      </div>
+      <div class="beta-action">
+        <a class="btn btn-primary" href="mailto:hekai@10v.cc?subject=申请加入怪兽牧场 Beta 早期合作计划">📧 申请加入 Beta 计划</a>
+        <p class="beta-mail">或邮件联系 hekai@10v.cc</p>
+      </div>
     </div>
   </div>
 </section>
