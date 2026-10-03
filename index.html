@@ -392,8 +392,14 @@ footer{background:#0a0818;color:rgba(255,255,255,.55);padding:56px 0 40px;font-s
   .hero-visual{height:400px;margin-top:10px}
   .hv-main{width:230px;height:230px}
   .orbit-ring{width:280px;height:280px}.orbit-ring.r2{width:330px;height:330px}
-  .scene-grid,.scene-grid.flip{grid-template-columns:1fr;gap:40px}
+  .scene-grid,.scene-grid.flip{grid-template-columns:1fr;gap:24px;margin-top:30px}
   .scene-grid.flip .scene-text{order:0}
+  /* 手机端：去除视觉容器强制最小高度，避免卡片四周大留白 */
+  .scene-visual{min-height:0}
+  /* 手机端：大幅收紧各区块上下留白 */
+  .scene,.ends,.guarantee,.pricing,.faq,.beta{padding-top:62px;padding-bottom:62px}
+  .stats{padding:46px 0}
+  .final{padding:72px 0}
   .stats-grid{grid-template-columns:repeat(2,1fr);gap:40px 20px}
   .ends-grid,.price-grid{grid-template-columns:1fr;max-width:460px;margin-left:auto;margin-right:auto}
   .price-card.hot{transform:none}.price-card.hot:hover{transform:translateY(-8px)}
@@ -402,13 +408,23 @@ footer{background:#0a0818;color:rgba(255,255,255,.55);padding:56px 0 40px;font-s
 @media(max-width:520px){
   .g-grid{grid-template-columns:1fr}
   .mgrid{grid-template-columns:repeat(2,1fr)}
-  .hero-visual{height:340px}
-  .hv-a,.hv-b,.hv-c,.hv-d{width:80px;height:80px}
+  .hero-visual{height:300px}
+  .hv-a,.hv-b,.hv-c,.hv-d{width:70px;height:70px}
   .hv-chip{font-size:11.5px;padding:7px 12px}
   .hv-chip.c2{right:0}
   .evo-stage .arw{display:none}
   .evo-stage img{width:46%}
-  .final-pets{gap:10px}.final-pets img{width:60px;height:60px}
+  .final-pets{gap:10px}.final-pets img{width:54px;height:54px}
+
+  /* 手机端进一步收紧卡片与文字间距 */
+  .scene,.ends,.guarantee,.pricing,.faq,.beta{padding-top:48px;padding-bottom:48px}
+  .end-card,.price-card{padding:30px 24px}
+  .beta-card{padding:36px 26px}
+  .g-quality{padding:26px 24px}
+  .scene-text .lead{margin-top:14px}
+  .feature-list{margin-top:20px;gap:13px}
+  .ends-grid{margin-top:36px}
+  .g-grid{margin-top:36px}
 }
 </style>
 </head>
