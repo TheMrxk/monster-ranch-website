@@ -205,6 +205,27 @@ section{position:relative}
 .phone-mini img{width:42px;height:42px;object-fit:contain}
 .phone-mini b{font-size:12.5px}.phone-mini small{font-size:11px;color:var(--muted)}
 
+/* Remote signature visual */
+.sigdoc{
+  width:100%; max-width:340px; background:#fff; border-radius:18px;
+  padding:30px 30px 34px; position:relative;
+  box-shadow:0 30px 60px rgba(109,74,163,.22);
+}
+.sd-top{font-size:17px;font-weight:800;color:#3d2e5c;text-align:center;margin-bottom:22px}
+.sd-lines{display:flex;flex-direction:column;gap:12px;margin-bottom:34px}
+.sd-lines span{height:8px;border-radius:6px;background:#efe8fa;width:100%}
+.sd-signrow{display:flex;align-items:center;gap:8px}
+.sds-label{font-size:12px;font-weight:700;color:#6b6484;white-space:nowrap}
+.sds-line{flex:1;border-bottom:1.5px solid #e3d8f5;height:0}
+.sds-name{font-size:12px;font-weight:800;color:#2fa975;white-space:nowrap}
+.sig-chip{
+  margin:22px auto 0; display:table;
+  background:linear-gradient(135deg,#f1e9ff,#e4f7ec);
+  color:#3d2e5c;font-size:12.5px;font-weight:800;
+  padding:9px 18px;border-radius:999px;
+  box-shadow:0 10px 24px rgba(109,74,163,.14);
+}
+
 /* ============ School guarantees ============ */
 .guarantee{background:#fff;padding:110px 0}
 .g-grid{margin-top:64px;display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
@@ -595,6 +616,38 @@ footer{background:#0a0818;color:rgba(255,255,255,.55);padding:56px 0 40px;font-s
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Scene 5: Remote signature -->
+<section class="scene cream">
+  <div class="wrap">
+    <div class="scene-grid">
+      <div class="scene-text reveal">
+        <div class="sec-eyebrow">远程签字</div>
+        <h3>一份通知，家长在手机上<br>就把字签了。</h3>
+        <p class="lead">告别打印、回收、核对纸质回执。老师线上发布签字任务，家长扫码横屏手写，签名自动合成回原文档，支持 PDF / Word，导出即可归档。</p>
+        <ul class="feature-list">
+          <li><span class="fl-ico pink">✍️</span><div><b>手机直接手写</b><br>家长端横屏手写签名，免打印、免拍照、不用装 App。</div></li>
+          <li><span class="fl-ico blue">📄</span><div><b>签名自动插回文档</b><br>Word 自动转 PDF，去白底并烧录免责水印，一键导出带签名文件。</div></li>
+          <li><span class="fl-ico green">📊</span><div><b>签字进度实时掌握</b><br>可对全班或指定学生发布，谁签谁没签一目了然，不用逐一催收。</div></li>
+        </ul>
+      </div>
+      <div class="scene-visual reveal d1">
+        <div class="sigdoc">
+          <div class="sd-top">📋 安全告知书</div>
+          <div class="sd-lines">
+            <span></span><span></span><span></span><span style="width:72%"></span>
+          </div>
+          <div class="sd-signrow">
+            <span class="sds-label">家长签字：</span>
+            <span class="sds-line"></span>
+            <span class="sds-name">✍️ 已签</span>
+          </div>
+        </div>
+        <div class="sig-chip">✓ 已签 42 / 45 · PDF 已生成</div>
       </div>
     </div>
   </div>
