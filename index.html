@@ -2,9 +2,19 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>班级怪兽牧场 · 让每一间教室都成为冒险的乐园</title>
 <meta name="description" content="班级怪兽牧场——面向学校的游戏化班级管理平台。教师端、家长端、课堂大屏三端一体，宠物养成、实时对抗、考勤任务、家校共育。">
+<meta name="theme-color" content="#0d0b22">
+
+<!-- 社交分享元数据 -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="班级怪兽牧场">
+<meta property="og:title" content="班级怪兽牧场 · 让每一间教室都成为冒险的乐园">
+<meta property="og:description" content="面向学校的游戏化班级管理平台。教师端、家长端、课堂大屏三端一体，宠物养成、实时对抗、远程签字、家校共育。">
+<meta property="og:url" content="https://www.10v.cc/">
+<meta property="og:image" content="https://www.10v.cc/assets/pets/dragon_stage3.png">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 /* ============ Base ============ */
 *{margin:0;padding:0;box-sizing:border-box}
@@ -23,6 +33,22 @@ body{
 }
 img{display:block;max-width:100%}
 a{text-decoration:none;color:inherit}
+
+/* ============ 无障碍：键盘焦点环 ============ */
+a:focus-visible,button:focus-visible{
+  outline:3px solid #ff9ec0;
+  outline-offset:2px;
+  border-radius:6px;
+}
+/* ============ 无障碍：尊重减少动效偏好 ============ */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+    scroll-behavior:auto !important;
+  }
+}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 section{position:relative}
 
@@ -403,6 +429,7 @@ footer{background:#0a0818;color:rgba(255,255,255,.55);padding:56px 0 40px;font-s
   </div>
 </nav>
 
+<main>
 <!-- Hero -->
 <header class="hero" id="top">
   <div class="particles" id="particles"></div>
@@ -814,6 +841,8 @@ footer{background:#0a0818;color:rgba(255,255,255,.55);padding:56px 0 40px;font-s
     </div>
   </div>
 </section>
+
+</main>
 
 <!-- Footer -->
 <footer>
