@@ -428,6 +428,23 @@ footer{background:#0a0818;color:rgba(255,255,255,.55);padding:56px 0 40px;font-s
   .ends-grid{margin-top:36px}
   .g-grid{margin-top:36px}
 }
+
+/* ===== 使用说明书 ===== */
+.manual{background:linear-gradient(180deg,#fff,#faf7ff)}
+.ui-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px 28px;margin-top:34px}
+.ui-group{background:#fff;border:1.5px solid #efe9fb;border-radius:20px;padding:18px 20px;
+  box-shadow:0 8px 24px rgba(120,80,200,.08)}
+.ui-role{font-size:18px;font-weight:800;color:#3d2e5c;margin-bottom:12px}
+.ui-d{border-top:1px solid #f1ecfb}
+.ui-d:first-of-type{border-top:none}
+.ui-d summary{list-style:none;display:flex;align-items:center;gap:10px;
+  padding:12px 2px;cursor:pointer;font-size:15px;font-weight:700;color:#4a3f6b}
+.ui-d summary::-webkit-details-marker{display:none}
+.ui-q{flex:1}
+.ui-arrow{color:#b6a9d6;font-size:20px;line-height:1;transition:transform .25s ease}
+.ui-d[open] .ui-arrow{transform:rotate(90deg);color:#8b5cf6}
+.ui-a{padding:0 2px 14px;font-size:14px;color:#71658e;line-height:1.75}
+@media(max-width:760px){.ui-wrap{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -439,6 +456,7 @@ footer{background:#0a0818;color:rgba(255,255,255,.55);padding:56px 0 40px;font-s
     <div class="nav-links">
       <a href="#product">产品</a>
       <a href="#screen">实时大屏</a>
+      <a href="#manual">使用说明</a>
       <a href="#school">学校方案</a>
       <a href="#pricing">定价</a>
       <a href="#faq">常见问题</a>
@@ -806,6 +824,46 @@ footer{background:#0a0818;color:rgba(255,255,255,.55);padding:56px 0 40px;font-s
       </div>
     </div>
     <p class="price-note reveal">学校多班级批量采购另有优惠，欢迎邮件咨询：<b>hekai@10v.cc</b></p>
+  </div>
+</section>
+
+<!-- 使用说明 -->
+<section class="manual" id="manual">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">User Guide</div>
+      <h2 class="sec-title">使用说明书</h2>
+      <p class="sec-sub">面向老师与家长的完整功能手册，点击各功能查看使用方法与规则。</p>
+    </div>
+    <div class="ui-wrap">
+<div class="ui-group"><h3 class="ui-role">🧑‍🏫 教师端</h3><details class="ui-d"><summary><span class="ui-q">首页工作台</span><span class="ui-arrow">›</span></summary><div class="ui-a">登录后的总入口，顶部展示需要关注的卡片（宠物饿肚子/快升级/心情低落，单只直达学生详情、多只跳列表），中部进入各功能模块，中央仪表盘查看积分等指标、趋势与分布。所有数据只统计本班学生。</div></details>
+<details class="ui-d"><summary><span class="ui-q">学生管理</span><span class="ui-arrow">›</span></summary><div class="ui-a">管理本班名单，可单个新增或用 Excel 批量导入。列表显示积分与宠物缩略图，点学生进入详情。新生不再背包送蛋，第一只精灵在大屏精灵馆直接开普通蛋。</div></details>
+<details class="ui-d"><summary><span class="ui-q">学生详情 · 宠物操作台</span><span class="ui-arrow">›</span></summary><div class="ui-a">针对单个学生，提供宠物/图鉴/流水三个标签。可查看宠物立绘、等级、经验、饱食、心情，并代学生喂养、玩耍、改名（均不扣学生积分），代穿戴皮肤、代复核背包礼物。宠物 5 级、10 级进化（共3阶段），10 级终极进化有全屏海报仪式。</div></details>
+<details class="ui-d"><summary><span class="ui-q">加减分</span><span class="ui-arrow">›</span></summary><div class="ui-a">最核心操作：选学生（可多名/全班）→选分类→填分值和原因→提交。加分自动给主宠加经验。排名按当前净积分计算，扣分立即反映。</div></details>
+<details class="ui-d"><summary><span class="ui-q">课堂任务 / 作业榜</span><span class="ui-arrow">›</span></summary><div class="ui-a">发布课堂任务或作业，可设奖励分（0=不加分）。可单个或批量勾选完成、提前关闭，在进行中/已归档间切换，到期自动归档。勾选完成复用加分逻辑，撤销会扣回。</div></details>
+<details class="ui-d"><summary><span class="ui-q">课堂考勤</span><span class="ui-arrow">›</span></summary><div class="ui-a">记录每日出勤，默认全员到齐，只需标记异常。可切换日期、循环切换学生状态，查看出勤率环。请假单批准后自动写入，不影响手动记录；区间统计只计上课日，不虚增。</div></details>
+<details class="ui-d"><summary><span class="ui-q">全班目标与奖励发放</span><span class="ui-arrow">›</span></summary><div class="ui-a">设定当天全班目标（积分/任务完成/考勤），支持手动计数器，达标自动判定。可在考勤页或目标页给全班发奖励积分，并支持撤销、防重复发放。</div></details>
+<details class="ui-d"><summary><span class="ui-q">小组与小组对抗</span><span class="ui-arrow">›</span></summary><div class="ui-a">建立固定学习小组、分配成员，开展课堂 PK。给组加减分时组内每人同步加个人积分与宠物经验。对抗至少2组，可实时 ±1/±5，结束自动揭晓冠军并写入荣誉殿堂。</div></details>
+<details class="ui-d"><summary><span class="ui-q">值日排班</span><span class="ui-arrow">›</span></summary><div class="ui-a">设置岗位并自动轮排。点自动排班选起止日期、是否跳过周末；可按人打勾、换人、清空，底部增删岗位。全班按学号排队全局轮转、人人有份，默认岗位扫地3人/擦黑板/倒垃圾/摆桌椅。</div></details>
+<details class="ui-d"><summary><span class="ui-q">请假审批</span><span class="ui-arrow">›</span></summary><div class="ui-a">查看家长提交的申请（病/事假、全天多日或半天），批准或驳回。批准自动写入对应日期考勤，驳回或家长撤销不误伤手动记录。</div></details>
+<details class="ui-d"><summary><span class="ui-q">座位排列</span><span class="ui-arrow">›</span></summary><div class="ui-a">管理班级学生座位，可视化排布与调整。</div></details>
+<details class="ui-d"><summary><span class="ui-q">商店、订单与礼物复核</span><span class="ui-arrow">›</span></summary><div class="ui-a">处理积分商店订单：虚拟品去使用、实体品确认领取；家长代买的礼物在大屏邮箱或背包代复核（接受/婉拒，婉拒原货币全额退还并回补库存）。注意蛋只走精灵蛋专区，不要手工建蛋当普通商品。</div></details>
+<details class="ui-d"><summary><span class="ui-q">皮肤系统</span><span class="ui-arrow">›</span></summary><div class="ui-a">选学生后代兑换、穿戴或卸下皮肤。皮肤仅在宠物终极形态可穿戴；双货币商品始终显示，买不起置灰并提示差额。</div></details>
+<details class="ui-d"><summary><span class="ui-q">班级宝箱</span><span class="ui-arrow">›</span></summary><div class="ui-a">CSGO 式开箱玩法：配置钥匙的积分/碎片价和三类奖品，学生在大屏用钥匙开箱。概率按权重自动折算显示，中奖结果由服务器决定，积分/碎片自动到账、实物线下发放。</div></details>
+<details class="ui-d"><summary><span class="ui-q">亲子任务</span><span class="ui-arrow">›</span></summary><div class="ui-a">发布家校共育任务到任务池。家长领取、陪伴完成并拍照打卡；老师审核（默认通过，可一键全过，驳回需填原因）。当天17点前通过当天17点到账，之后次日17点，系统自动发放与补发。</div></details>
+<details class="ui-d"><summary><span class="ui-q">班费收集</span><span class="ui-arrow">›</span></summary><div class="ui-a">发起班级收费，只做登记确认、不碰真实支付。支持人均均摊与按人填写，可代登记、复核申报、减免、一键催缴，并有班级收支台账（收入−支出=结余）。</div></details>
+<details class="ui-d"><summary><span class="ui-q">远程签字</span><span class="ui-arrow">›</span></summary><div class="ui-a">发布签字任务（事项内容必填，可附 PDF/Word/照片），家长扫码横屏手写。系统自动抠白底、烧录免责水印；老师可把签名拖入文档调整位置，导出 PDF 归档。文件保留3天，任务与名单长期保留。</div></details>
+<details class="ui-d"><summary><span class="ui-q">随机点名 / 公告 / 反馈</span><span class="ui-arrow">›</span></summary><div class="ui-a">随机点名带灯光粒子动效；公告由官方统一发布，未读自动弹窗；设置内可提交意见反馈（可附截图），并查看本人反馈记录。</div></details>
+<details class="ui-d"><summary><span class="ui-q">教室大屏</span><span class="ui-arrow">›</span></summary><div class="ui-a">投屏看板，深色糖果夜风格，含牧场、领奖台、考勤、任务、值日、对抗、荣誉等，约30秒自动刷新，无底部标签栏。</div></details></div>
+<div class="ui-group"><h3 class="ui-role">👨‍👩‍👧 家长端</h3><details class="ui-d"><summary><span class="ui-q">家长首页</span><span class="ui-arrow">›</span></summary><div class="ui-a">查看孩子当天值日提醒、考勤与积分概况，进入各项功能与学期成长报告。</div></details>
+<details class="ui-d"><summary><span class="ui-q">请假</span><span class="ui-arrow">›</span></summary><div class="ui-a">为孩子提交请假：选病假/事假、全天多日或上午/下午半天，提交后在审批前可撤销。</div></details>
+<details class="ui-d"><summary><span class="ui-q">作业打卡</span><span class="ui-arrow">›</span></summary><div class="ui-a">查看老师布置的作业，按实际选择已完成/有困难/未完成并留言提交；批改结果与状态在此查看。</div></details>
+<details class="ui-d"><summary><span class="ui-q">送礼物</span><span class="ui-arrow">›</span></summary><div class="ui-a">用孩子的积分或碎片代买礼物，等待老师征求孩子意见后复核；孩子婉拒时原货币全额退还、库存回补。</div></details>
+<details class="ui-d"><summary><span class="ui-q">亲子任务</span><span class="ui-arrow">›</span></summary><div class="ui-a">在任务池领取老师发布的任务，陪伴孩子完成后填留言、拍照提交打卡；审核通过当天或次日下午5点积分自动到账。</div></details>
+<details class="ui-d"><summary><span class="ui-q">班费</span><span class="ui-arrow">›</span></summary><div class="ui-a">查看应缴金额，转账或交现金后点我已缴纳申报，老师确认前可撤回，被驳回可重新缴纳；可查看公开的收支台账。</div></details>
+<details class="ui-d"><summary><span class="ui-q">远程签字</span><span class="ui-arrow">›</span></summary><div class="ui-a">查看老师发布的签字任务与待签文件，先看清内容再横屏手写签名提交。任务进行中可重新签名，老师处理后的成品可在此查看。</div></details>
+<details class="ui-d"><summary><span class="ui-q">留言 / 成长报告 / 公告</span><span class="ui-arrow">›</span></summary><div class="ui-a">与老师留言沟通；查看并打印学期综合成长报告（A4 PDF）；查看官方更新公告。</div></details></div>
+    </div>
   </div>
 </section>
 
